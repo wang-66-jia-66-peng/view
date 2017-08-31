@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.zhiyou100.mybits.mapper.UserMapper">
+  
+    
+     <resultMap type="User" id="resm">
+      <result column="name_id" property="name"/>
+     </resultMap>
+    <select id="findAllUserById"   resultType="User"  parameterType="Integer"  resultMap="resm" >
+        select * from denglu 
+        <where>id=#{v} 
+        </where>  
+    </select>
+   
+    
+    <resultMap type="staff"        id="staffWithProduct">
+      <result column="name"        property="name"/>
+      <result column="address"     property="address"/>
+      <collection property="pd"    ofType="product">
+         <result column="p_name"   property="p_name" />
+         <result column="p_price"  property="p_price" />
+      </collection>
+    </resultMap>
+   <select id="findAllSaffWithProductById"  parameterType="Integer"    resultMap="staffWithProduct">    
+     select s.name , s.address, p.p_name,p.p_price  
+     from   staff s   left  join 
+     product p   on
+     p.s_id=s.id
+     where
+     s.id=#{v}
+   </select>
+
+
+   
+  
+   <resultMap type="product" id="productWithSatff">
+         <result  column="p_name"     property="p_name" />
+        <association property="st" javaType="staff">
+          <result column="name"  property="name"/>
+          <result column="age"  property="age"/>
+        </association>
+   </resultMap>
+   <select id="findSaffByProductId"   parameterType="Integer"      resultMap="productWithSatff" >
+   select p.p_name , s.name , s.age  
+    from  product p  left join
+    staff s  on
+    p.s_id=s.id
+    where p.p_id = #{v}
+    </select>
+   
+   
+   
+   
+    
+    
+    <resultMap type="product" id="productWithSatff1">
+        <id column="p_id"      property="p_id"/>
+      <result column="p_name"   property="p_name"/>
+      <result column="p_price"   property="p_price"/>
+      <result column="s_id"   property="s_id"/>  
+        <association property="st" javaType="staff">
+          <result column="name"  property="name"/>
+          <result column="age"  property="age"/>
+        </association>
+   </resultMap>
+   <select id="findSaffByProductallId"   parameterType="Integer"     resultMap="productWithSatff1" >
+    select p.*, s.name , s.age  
+    from  product p  left join
+    staff s  on
+    p.s_id=s.id
+    where p.p_id = #{v}
+    </select> 
+ 
+
+
+
+
+
+
+
+
+
+</mapper>
+
+

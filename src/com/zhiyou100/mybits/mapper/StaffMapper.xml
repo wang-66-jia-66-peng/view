@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiyou100.mybits.mapper.StaffMapper">
+   
+    <select id="findAllStaff"   resultType="Staff">
+             select * from staff
+    </select>
+  
+    <select id="findStaffByQuery" resultType="Staff"  parameterType="Query">
+          select * from  staff  where  name  like  '%' #{sta.name} '%'
+    </select>
+
+    <select id="findStaffCount"  resultType="Integer">
+             select count(*) from staff
+    </select>
+    
+    <select id="findStaffName" resultType="String" parameterType="integer">
+        select name from staff where id=#{V}
+    </select>
+
+   <select id="findStaffByNameAndAddress"  parameterType="staff" resultType="staff">
+     select * from  staff 
+     <where>
+      <if test="name != null and name !='' ">
+        and  name like '%' #{name} '%'
+      </if>
+     <if test="address != null and address !='' ">
+       and  address like '%' #{address} '%'
+     </if>
+     </where>
+   </select>
+
+
+    <sql id="1">
+       select * from  staff 
+    </sql>
+    
+    <select id="findStaffById"  parameterType="Query" resultType="staff">
+     <include refid="1"/> 
+      <where>
+      <foreach collection="integers" item="id" open="id in ("  separator="," close=")">
+        #{id}      
+      </foreach>
+      </where>  
+    </select>
+
+
+    <select id="findStaffById02"  parameterType="integer" resultType="staff">
+     <include refid="1"/> 
+      <where>
+      <foreach collection="list" item="id" open="id in ("  separator=","  close=")">
+        #{id}      
+      </foreach>
+      </where>  
+    </select>
+    
+    
+    <select id="findStaffById03"  parameterType="Integer"  resultType="staff">
+     <include refid="1"/> 
+      <where>
+      <foreach collection="array"  item="id"  open="id in ("  separator=","   close=")">
+        #{id}      
+      </foreach>
+      </where>  
+    </select>
+  
+
+
+
+</mapper>
